@@ -1,0 +1,6 @@
+@fcg_NotificationsAPI_HostAddress = http://localhost:5161
+
+GET {{fcg_NotificationsAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
