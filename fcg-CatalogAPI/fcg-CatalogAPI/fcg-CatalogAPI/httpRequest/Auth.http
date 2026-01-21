@@ -1,0 +1,109 @@
+﻿@port = 7314
+@FCG_API_HostAddress = https://localhost:{{port}}
+@AuthToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZDJkY2NiOS1jOTFmLTQ5ZjMtYTBkMi1kYzQ1ZGVmOGU2ZGUiLCJlbWFpbCI6Im1hcmlhLnNhbnRvc0BlbWFpbC5jb20iLCJqdGkiOiIwNWRhOGE2My0xOTAzLTQyYzUtODdhZC03ODI1YjNhMjU4MjAiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjNkMmRjY2I5LWM5MWYtNDlmMy1hMGQyLWRjNDVkZWY4ZTZkZSIsImRpc3BsYXlOYW1lIjoiTWFyaWEgU2FudG9zIiwiZmlyc3ROYW1lIjoiTWFyaWEiLCJsYXN0TmFtZSI6IlNhbnRvcyIsImZ1bGxOYW1lIjoiTWFyaWEgU2FudG9zIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiUGxheWVyIiwiZXhwIjoxNzYyMTMzODE1LCJpc3MiOiJGQ0cuQXBpIiwiYXVkIjoiRkNHLkNsaWVudCJ9.Et0QazkKqEeQ6BmhA_QP84i-pSU1t9hsU6Wlq6PKVVI
+@refreshToken = PklCuWVSPhU9iNxCe5nx8sjhHEIXIXerJ6N02KG0H4U=
+
+### 1. Registrar Novo Player
+POST {{FCG_API_HostAddress}}/api/Auth/register-player
+Content-Type: application/json
+
+{
+  "firstName": "Maria",
+  "lastName": "Santos",
+  "displayName": "MaryGames",
+  "birthday": "1995-08-15",
+  "email": "maria.santos@email.com",
+  "password": "Maria#123!",
+  "confirmPassword": "Maria#123!"
+}
+
+### 2. Login com Usuário Registrado
+@name loginRequest
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "maria.santos@email.com",
+  "password": "Maria#123!"
+}
+
+### 3. Obter Perfil do Usuário
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}
+
+### 4. Testar Refresh Token
+@name refreshTokenRequest
+POST {{FCG_API_HostAddress}}/api/Auth/refresh
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "token": "{{AuthToken}}",
+  "refreshToken": "{{RefreshToken}}"
+}
+
+
+### 5. Verificar Token Após Refresh (usando o token novo)
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}
+
+### 6. Testar Cenários de Login com Falha
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "maria.santos@email.com",
+  "password": "SenhaErrada123!"
+}
+
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario.inexistente@email.com",
+  "password": "QualquerSenha123!"
+}
+
+### 7. Testar Cenários de Token Inválido
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer invalid_token_here
+
+GET {{FCG_API_HostAddress}}/api/Auth/me
+
+### 8. Registrar Segundo Player de Teste
+POST {{FCG_API_HostAddress}}/api/Auth/register-player
+Content-Type: application/json
+
+{
+  "firstName": "Carlos",
+  "lastName": "Oliveira",
+  "displayName": "CarlosGamer",
+  "birthday": "1992-03-20",
+  "email": "carlos.oliveira@email.com",
+  "password": "Carlos123!",
+  "confirmPassword": "Carlos123!"
+}
+
+### 9. Login com Segundo Usuário
+@name finalAuthVerification
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos.oliveira@email.com",
+  "password": "Carlos123!"
+}
+
+@finalToken = {{finalAuthVerification.response.body.token}}
+
+### Verificar token do segundo usuário
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{finalToken}}
+
+### 10. Resumo do Sistema de Auth
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}
+
+### Quick Auth Status Check
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}

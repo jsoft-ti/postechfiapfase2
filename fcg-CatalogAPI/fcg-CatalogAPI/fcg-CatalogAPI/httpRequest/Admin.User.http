@@ -1,0 +1,117 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Login
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "seu_usuario",
+  "password": "sua_senha"
+}
+
+### Admin Users Endpoints
+
+### Step 1: Get All Users with Different Role Filters
+# @name getAllUsers
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=50&OrderBy.SortBy=displayName&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Get Admin Users Only
+# @name getAdminUsers
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=30&Filter.Role=Admin
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Get Player Users Only
+# @name getPlayerUsers
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=20&Filter.Role=Player
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Get User by ID - Admin User
+# @name getAdminUserById
+GET {{FCG_API_HostAddress}}/api/admin/user/{{AdminUserId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Get User by ID - Player User
+# @name getPlayerUserById
+GET {{FCG_API_HostAddress}}/api/admin/user/{{PlayerUserId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Test Email Filter
+# @name testEmailFilter
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=15&Filter.Email=gmail.com
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Test Name Filter
+# @name testNameFilter
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=10&Filter.Name={{UserDisplayName1}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 8: Test Combined Filters
+# @name testCombinedFilters
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=20&Filter.Role=Player&Filter.Email=example.com
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Get User by Different IDs
+# @name getMultipleUsersById
+GET {{FCG_API_HostAddress}}/api/admin/user/{{UserId1}}
+Authorization: Bearer {{AuthToken}}
+
+GET {{FCG_API_HostAddress}}/api/admin/user/{{UserId2}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Test Pagination
+# @name testPagination
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=2&PageSize=5&OrderBy.SortBy=displayName
+Authorization: Bearer {{AuthToken}}
+
+### Step 11: Test Different Sorting Options
+# @name testSortingOptions
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=5&OrderBy.SortBy=email&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=5&OrderBy.SortBy=createdAt&OrderBy.Ascending=false
+Authorization: Bearer {{AuthToken}}
+
+### Step 12: Final Users Summary
+# @name finalSummary
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=10&OrderBy.SortBy=role&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations
+
+### Get Users with Role Filter
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=30&Filter.Role=Admin
+Authorization: Bearer {{AuthToken}}
+
+### Get Users with Player Filter
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=20&Filter.Role=Player
+Authorization: Bearer {{AuthToken}}
+
+### Get User by ID
+GET {{FCG_API_HostAddress}}/api/admin/user/{{UserId}}
+Authorization: Bearer {{AuthToken}}
+
+### Get Users with Email Filter
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=15&Filter.Email=example.com
+Authorization: Bearer {{AuthToken}}
+
+### Get Users with Name Filter
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=10&Filter.Name=João
+Authorization: Bearer {{AuthToken}}
+
+### Test Advanced Filter Combinations
+# @name testAdvancedFilters
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=25&Filter.Role=Player&Filter.Email=gmail.com&OrderBy.SortBy=displayName&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Quick Users Status Check
+# @name quickUsersCheck
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}
+
+### Bulk User Operations Test
+# @name bulkUserOperations
+GET {{FCG_API_HostAddress}}/api/admin/user?PageNumber=1&PageSize=100
+Authorization: Bearer {{AuthToken}}

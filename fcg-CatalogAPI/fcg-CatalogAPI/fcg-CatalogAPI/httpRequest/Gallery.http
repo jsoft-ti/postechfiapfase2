@@ -1,0 +1,21 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZGRmYzlkOS05ZTI0LTQ3NjUtOWQ2MC02N2Q2MGM4MzE5Y2QiLCJlbWFpbCI6Im1hcmlhLnNhbnRvc0BlbWFpbC5jb20iLCJqdGkiOiI2YjRlMjE3MS0yMjZjLTRhMDEtYmMwNS1kMWI1MTBhMTY0YzAiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjNkZGZjOWQ5LTllMjQtNDc2NS05ZDYwLTY3ZDYwYzgzMTljZCIsImRpc3BsYXlOYW1lIjoiTWFyaWEgU2FudG9zIiwiZmlyc3ROYW1lIjoiTWFyaWEiLCJsYXN0TmFtZSI6IlNhbnRvcyIsImZ1bGxOYW1lIjoiTWFyaWEgU2FudG9zIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiUGxheWVyIiwiZXhwIjoxNzYyMTMwMDA1LCJpc3MiOiJGQ0cuQXBpIiwiYXVkIjoiRkNHLkNsaWVudCJ9.Cza5NgAjLb2vgdTjjLkDec_SqZyhjvlFovZFZphN6ms//your_jwt_token_here
+
+### Gallery Workflow - Complete Example
+
+### 1. Get Gallery Games and Auto-capture IDs
+GET {{FCG_API_HostAddress}}/api/Gallery?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}
+
+### 2. Get First Game Details
+GET {{FCG_API_HostAddress}}/api/Gallery/{{Game1_Id}}
+Authorization: Bearer {{AuthToken}}
+
+### 3. Get Second Game Details (if available)
+GET {{FCG_API_HostAddress}}/api/Gallery/{{Game2_Id}}
+Authorization: Bearer {{AuthToken}}
+
+### 4. Get Promotions
+GET {{FCG_API_HostAddress}}/api/Gallery/promotions
+Authorization: Bearer {{AuthToken}}

@@ -1,0 +1,63 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Cart Endpoints - Dynamic GameId Capture
+
+### Step 1: Get Available Games and Capture GameId
+GET {{FCG_API_HostAddress}}/api/Gallery?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Get Current Cart (Should be empty initially)
+GET {{FCG_API_HostAddress}}/api/cart
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Add First Game to Cart
+POST {{FCG_API_HostAddress}}/api/cart/add/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Verify Cart After Addition
+GET {{FCG_API_HostAddress}}/api/cart
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Add Second Game if Available
+POST {{FCG_API_HostAddress}}/api/cart/add/{{GameId2}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Verify Cart with Multiple Items
+GET {{FCG_API_HostAddress}}/api/cart
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Remove First Game from Cart
+DELETE {{FCG_API_HostAddress}}/api/cart/remove/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 8: Verify Cart After Removal
+GET {{FCG_API_HostAddress}}/api/cart
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Clear Entire Cart
+DELETE {{FCG_API_HostAddress}}/api/cart/clear
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Final Cart Verification
+GET {{FCG_API_HostAddress}}/api/cart
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations (Para testes específicos)
+
+### Add Specific Game to Cart
+POST {{FCG_API_HostAddress}}/api/cart/add/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Remove Specific Game from Cart
+DELETE {{FCG_API_HostAddress}}/api/cart/remove/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Quick Cart Check
+GET {{FCG_API_HostAddress}}/api/cart
+Authorization: Bearer {{AuthToken}}
+
+### Quick Cart Clear
+DELETE {{FCG_API_HostAddress}}/api/cart/clear
+Authorization: Bearer {{AuthToken}}

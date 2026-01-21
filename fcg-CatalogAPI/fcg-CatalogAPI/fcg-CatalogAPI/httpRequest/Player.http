@@ -1,0 +1,109 @@
+﻿@port = 7314
+@FCG_API_HostAddress = https://localhost:{{port}}
+@AuthToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZDJkY2NiOS1jOTFmLTQ5ZjMtYTBkMi1kYzQ1ZGVmOGU2ZGUiLCJlbWFpbCI6Im1hcmlhLnNhbnRvc0BlbWFpbC5jb20iLCJqdGkiOiIwNWRhOGE2My0xOTAzLTQyYzUtODdhZC03ODI1YjNhMjU4MjAiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjNkMmRjY2I5LWM5MWYtNDlmMy1hMGQyLWRjNDVkZWY4ZTZkZSIsImRpc3BsYXlOYW1lIjoiTWFyaWEgU2FudG9zIiwiZmlyc3ROYW1lIjoiTWFyaWEiLCJsYXN0TmFtZSI6IlNhbnRvcyIsImZ1bGxOYW1lIjoiTWFyaWEgU2FudG9zIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiUGxheWVyIiwiZXhwIjoxNzYyMTMzODE1LCJpc3MiOiJGQ0cuQXBpIiwiYXVkIjoiRkNHLkNsaWVudCJ9.Et0QazkKqEeQ6BmhA_QP84i-pSU1t9hsU6Wlq6PKVVI
+
+
+### Player Endpoints - Dynamic Data Capture
+
+### Step 1: Get Current Player Profile
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Get Available Games for Player
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Get Player Cart
+GET {{FCG_API_HostAddress}}/api/Player/cart
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Get Player Library
+GET {{FCG_API_HostAddress}}/api/Player/library?PageNumber=1&PageSize=15&OrderBy.OrderBy=title&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Test Filtered Available Games
+### Get Action Games under R$ 50
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=8&Filter.Genre=Action&Filter.MaxPrice=50
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Test RPG Games Filter
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=5&Filter.Genre=RPG
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Update Player Password
+PUT {{FCG_API_HostAddress}}/api/Player/password
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "{{PlayerFirstName}}",
+  "lastName": "{{PlayerLastName}}",
+  "displayName": "{{PlayerDisplayName}}",
+  "email": "{{PlayerEmail}}",
+  "birthday": "{{PlayerBirthday}}",
+  "password": "SenhaAtual123!",
+  "newPassword": "NovaSenha456!",
+  "confirmNewPassword": "NovaSenha456!"
+}
+
+### Step 8: Verify Profile After Update
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Test Different Library Ordering
+GET {{FCG_API_HostAddress}}/api/Player/library?PageNumber=1&PageSize=10&OrderBy.OrderBy=purchaseDate&OrderBy.Ascending=false
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Final Player Summary
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations (Para testes específicos)
+
+### Get Available Games with Custom Filters
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=15&Filter.Genre=Action&Filter.MaxPrice=50
+Authorization: Bearer {{AuthToken}}
+
+### Get Available Games with Different Genre
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=10&Filter.Genre=RPG
+Authorization: Bearer {{AuthToken}}
+
+### Get Available Games with Price Range
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=10&Filter.MinPrice=20&Filter.MaxPrice=100
+Authorization: Bearer {{AuthToken}}
+
+### Get Player Cart
+GET {{FCG_API_HostAddress}}/api/Player/cart
+Authorization: Bearer {{AuthToken}}
+
+### Get Player Library with Custom Sorting
+GET {{FCG_API_HostAddress}}/api/Player/library?PageNumber=1&PageSize=25&OrderBy.OrderBy=title
+Authorization: Bearer {{AuthToken}}
+
+### Get Player Library by Purchase Date
+GET {{FCG_API_HostAddress}}/api/Player/library?PageNumber=1&PageSize=20&OrderBy.OrderBy=purchaseDate&OrderBy.Ascending=false
+Authorization: Bearer {{AuthToken}}
+
+### Update Password (Template)
+PUT {{FCG_API_HostAddress}}/api/Player/password
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "João",
+  "lastName": "Silva",
+  "displayName": "JoaoPlayer",
+  "email": "joao.silva@email.com",
+  "birthday": "1990-05-20",
+  "password": "SenhaAntiga123!",
+  "newPassword": "NovaSenha456!",
+  "confirmNewPassword": "NovaSenha456!"
+}
+
+### Quick Player Profile Check
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}
+
+### Test Multiple Filter Combinations
+GET {{FCG_API_HostAddress}}/api/Player/available-games?PageNumber=1&PageSize=12&Filter.Genre=Action&Filter.MinPrice=10&Filter.MaxPrice=80&OrderBy.OrderBy=price&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}

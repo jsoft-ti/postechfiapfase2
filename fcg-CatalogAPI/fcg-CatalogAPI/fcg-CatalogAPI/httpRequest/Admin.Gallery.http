@@ -1,0 +1,232 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Login
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "seu_usuario",
+  "password": "sua_senha"
+}
+
+### Admin Gallery Endpoints
+
+### Step 1: Get Existing Gallery Games for Reference
+# @name getExistingGalleryGames
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Create New Gallery Game
+# @name createGalleryGame
+POST {{FCG_API_HostAddress}}/api/admin/gallery
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9786555520123",
+  "title": "Cyberpunk 2077: Phantom Liberty",
+  "subTitle": "Expansão Definitiva",
+  "genre": "RPG",
+  "description": "Uma expansão massiva para o aclamado Cyberpunk 2077, adicionando novas missões, áreas e mecânicas de jogo.",
+  "price": 149.90,
+  "promotionType": "Percentage",
+  "promotionValue": 20,
+  "promotionStartDate": "2024-06-01T00:00:00.000Z",
+  "promotionEndDate": "2024-06-30T23:59:59.000Z"
+}
+
+### Step 3: Verify Created Game in Gallery
+# @name verifyCreatedGame
+GET {{FCG_API_HostAddress}}/api/admin/gallery/{{CreatedGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Create Second Game for More Testing
+# @name createSecondGame
+POST {{FCG_API_HostAddress}}/api/admin/gallery
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9786555520456",
+  "title": "Elden Ring: Shadow of the Erdtree",
+  "subTitle": "Nova Expansão Épica",
+  "genre": "Action RPG",
+  "description": "Uma jornada épica em terras inexploradas do mundo de Elden Ring.",
+  "price": 199.90,
+  "promotionType": "FixedAmount",
+  "promotionValue": 40,
+  "promotionStartDate": "2024-07-15T00:00:00.000Z",
+  "promotionEndDate": "2024-08-15T23:59:59.000Z"
+}
+
+### Step 5: Update First Created Game
+# @name updateGalleryGame
+PUT {{FCG_API_HostAddress}}/api/admin/gallery/{{CreatedGameId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9786555520123",
+  "title": "Cyberpunk 2077: Phantom Liberty - Edição Especial",
+  "subTitle": "Expansão Definitiva + Conteúdo Extra",
+  "genre": "RPG",
+  "description": "Uma expansão massiva para o aclamado Cyberpunk 2077, agora com conteúdo adicional exclusivo.",
+  "price": 169.90,
+  "promotionType": "FixedAmount",
+  "promotionValue": 30,
+  "promotionStartDate": "2024-07-01T00:00:00.000Z",
+  "promotionEndDate": "2024-07-31T23:59:59.000Z"
+}
+
+### Step 6: Verify Game After Update
+# @name verifyUpdatedGame
+GET {{FCG_API_HostAddress}}/api/admin/gallery/{{CreatedGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Create Promotion for Second Game
+# @name createPromotion
+POST {{FCG_API_HostAddress}}/api/admin/gallery/{{SecondGameId}}/promotion
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "promotionType": "Percentage",
+  "promotionValue": 25,
+  "promotionStartDate": "2024-08-01T00:00:00.000Z",
+  "promotionEndDate": "2024-08-15T23:59:59.000Z"
+}
+
+### Step 8: Verify Promotion Creation
+# @name verifyPromotion
+GET {{FCG_API_HostAddress}}/api/admin/gallery/{{SecondGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Delete Promotion from First Game
+# @name deletePromotion
+DELETE {{FCG_API_HostAddress}}/api/admin/gallery/{{CreatedGameId}}/promotion
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Verify Promotion Deletion
+# @name verifyPromotionDeletion
+GET {{FCG_API_HostAddress}}/api/admin/gallery/{{CreatedGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 11: Test Public Gallery View
+# @name testPublicGallery
+GET {{FCG_API_HostAddress}}/api/Gallery?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Step 12: Delete Second Game (Cleanup)
+# @name deleteSecondGame
+DELETE {{FCG_API_HostAddress}}/api/admin/gallery/{{SecondGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 13: Final Verification - Remaining Games
+# @name finalVerification
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations
+
+### Create Gallery Game (Template)
+POST {{FCG_API_HostAddress}}/api/admin/gallery
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "1234567890123",
+  "title": "Novo Jogo de Teste",
+  "subTitle": "Subtítulo do Jogo",
+  "genre": "Ação",
+  "description": "Descrição detalhada do jogo para testes.",
+  "price": 99.90,
+  "promotionType": "Percentage",
+  "promotionValue": 15,
+  "promotionStartDate": "2024-01-01T00:00:00.000Z",
+  "promotionEndDate": "2024-12-31T23:59:59.000Z"
+}
+
+### Delete Gallery Game
+DELETE {{FCG_API_HostAddress}}/api/admin/gallery/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Get Gallery Game by ID (Admin)
+GET {{FCG_API_HostAddress}}/api/admin/gallery/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Update Gallery Game (Template)
+PUT {{FCG_API_HostAddress}}/api/admin/gallery/{{GameId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "1234567890123",
+  "title": "Título Atualizado",
+  "subTitle": "Subtítulo Atualizado",
+  "genre": "Gênero Atualizado",
+  "description": "Descrição atualizada do jogo.",
+  "price": 129.90,
+  "promotionType": "FixedAmount",
+  "promotionValue": 25,
+  "promotionStartDate": "2024-07-01T00:00:00.000Z",
+  "promotionEndDate": "2024-07-31T23:59:59.000Z"
+}
+
+### Delete Promotion
+DELETE {{FCG_API_HostAddress}}/api/admin/gallery/{{GameId}}/promotion
+Authorization: Bearer {{AuthToken}}
+
+### Create Promotion (Template)
+POST {{FCG_API_HostAddress}}/api/admin/gallery/{{GameId}}/promotion
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "promotionType": "Percentage",
+  "promotionValue": 25,
+  "promotionStartDate": "2024-08-01T00:00:00.000Z",
+  "promotionEndDate": "2024-08-15T23:59:59.000Z"
+}
+
+### Bulk Create Test Games
+# @name bulkCreateGames
+POST {{FCG_API_HostAddress}}/api/admin/gallery
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9786555520789",
+  "title": "Call of Duty: Modern Warfare III",
+  "subTitle": "Campanha Especial",
+  "genre": "FPS",
+  "description": "A mais nova entrega da franquia Call of Duty.",
+  "price": 249.90,
+  "promotionType": "Percentage",
+  "promotionValue": 10,
+  "promotionStartDate": "2024-09-01T00:00:00.000Z",
+  "promotionEndDate": "2024-09-30T23:59:59.000Z"
+}
+
+POST {{FCG_API_HostAddress}}/api/admin/gallery
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9786555520890",
+  "title": "The Legend of Zelda: Tears of the Kingdom",
+  "subTitle": "Aventura Épica",
+  "genre": "Adventure",
+  "description": "Explore Hyrule em uma aventura épica cheia de mistérios.",
+  "price": 299.90,
+  "promotionType": "FixedAmount",
+  "promotionValue": 50,
+  "promotionStartDate": "2024-10-01T00:00:00.000Z",
+  "promotionEndDate": "2024-10-31T23:59:59.000Z"
+}
+
+### Quick Gallery Status Check
+# @name quickGalleryCheck
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}

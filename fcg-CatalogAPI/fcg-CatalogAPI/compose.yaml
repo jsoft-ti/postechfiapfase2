@@ -1,0 +1,41 @@
+﻿services:
+  fcg-catalogapi:
+    build:
+      context: .
+      dockerfile: fcg-CatalogAPI/Dockerfile
+    container_name: fcg-CatalogAPI
+    ports:
+      - "8083:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Production
+
+      # STRING DE CONEXÃO QUE O .NET VAI PEGAR COM:
+      # configuration.GetConnectionString("DbFcg")
+      ConnectionStrings__DbFcg: "Host=db-fcg-catalog;Port=5432;Database=fcgdb;Username=fcguser;Password=fcgpass"
+
+    depends_on:
+      db-fcg-catalog:
+        condition: service_healthy
+
+  db-fcg-catalog:
+    image: postgres:16
+    container_name: db-fcg-catalog
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: fcguser
+      POSTGRES_PASSWORD: fcgpass
+      POSTGRES_DB: fcgdb
+    volumes:
+      - pgdata_fcg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fcguser -d fcgdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  pgdata_fcg:
