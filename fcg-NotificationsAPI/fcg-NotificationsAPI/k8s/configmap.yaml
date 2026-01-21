@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+data:
+  hostname: "rabbitmq-service" # Nome do serviço do RabbitMQ no cluster
+  port: "5672"
