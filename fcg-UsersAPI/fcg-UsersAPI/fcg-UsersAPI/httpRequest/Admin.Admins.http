@@ -1,0 +1,175 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Login
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "seu_usuario",
+  "password": "sua_senha"
+}
+
+### Admin Endpoints
+
+### Step 1: Get Current Admins List
+# @name getAdminsList
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=20&OrderBy.SortBy=firstName&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Create New Test Admin
+# @name createNewAdmin
+POST {{FCG_API_HostAddress}}/api/admin/Admin
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "Teste",
+  "lastName": "Administrador",
+  "displayName": "TestAdmin",
+  "birthday": "1990-06-15",
+  "email": "test.admin@fcg.com",
+  "password": "TestAdmin123!",
+  "confirmPassword": "TestAdmin123!"
+}
+
+### Step 3: Verify Admin Creation in List
+# @name verifyAdminCreation
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=25&OrderBy.SortBy=displayName
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Get Admin by ID (New Admin)
+# @name getAdminById
+GET {{FCG_API_HostAddress}}/api/admin/Admin/{{NewAdminId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Update Admin Information
+# @name updateAdmin
+PUT {{FCG_API_HostAddress}}/api/admin/Admin/{{NewAdminId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "Teste",
+  "lastName": "Super Administrador",
+  "displayName": "SuperTestAdmin",
+  "email": "super.test@fcg.com",
+  "birthday": "1990-06-15",
+  "password": "TestAdmin123!",
+  "newPassword": "SuperAdmin456!",
+  "confirmNewPassword": "SuperAdmin456!"
+}
+
+### Step 6: Verify Admin Update
+# @name verifyAdminUpdate
+GET {{FCG_API_HostAddress}}/api/admin/Admin/{{NewAdminId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Test Admin Filters
+# @name testAdminFilters
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=10&Filter.Email=fcg.com
+Authorization: Bearer {{AuthToken}}
+
+### Step 8: Test Display Name Filter
+# @name testDisplayNameFilter
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=10&Filter.Name=Test
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Delete Test Admin
+# @name deleteTestAdmin
+DELETE {{FCG_API_HostAddress}}/api/admin/Admin/{{NewAdminId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Verify Admin Deletion
+# @name verifyAdminDeletion
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=30
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations
+
+### Get All Admins with Pagination
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=10&OrderBy.SortBy=firstName
+Authorization: Bearer {{AuthToken}}
+
+### Create New Admin (Template)
+POST {{FCG_API_HostAddress}}/api/admin/Admin
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "Carlos",
+  "lastName": "Administrador",
+  "displayName": "AdminCarlos",
+  "birthday": "1985-03-10",
+  "email": "carlos.admin@fcg.com",
+  "password": "Admin123!",
+  "confirmPassword": "Admin123!"
+}
+
+### Create Multiple Test Admins
+# @name createMultipleAdmins
+POST {{FCG_API_HostAddress}}/api/admin/Admin
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "Ana",
+  "lastName": "Coordenadora",
+  "displayName": "AdminAna",
+  "birthday": "1988-07-22",
+  "email": "ana.coord@fcg.com",
+  "password": "AdminAna123!",
+  "confirmPassword": "AdminAna123!"
+}
+
+POST {{FCG_API_HostAddress}}/api/admin/Admin
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "Pedro",
+  "lastName": "Gerente",
+  "displayName": "AdminPedro",
+  "birthday": "1982-11-30",
+  "email": "pedro.gerente@fcg.com",
+  "password": "AdminPedro123!",
+  "confirmPassword": "AdminPedro123!"
+}
+
+### Get Admin by Specific ID
+GET {{FCG_API_HostAddress}}/api/admin/Admin/{{ExistingAdminId}}
+Authorization: Bearer {{AuthToken}}
+
+### Update Admin (Template)
+PUT {{FCG_API_HostAddress}}/api/admin/Admin/{{AdminId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "Carlos",
+  "lastName": "Administrador",
+  "displayName": "SuperAdmin",
+  "email": "carlos.superadmin@fcg.com",
+  "birthday": "1985-03-10",
+  "password": "Admin123!",
+  "newPassword": "SuperAdmin456!",
+  "confirmNewPassword": "SuperAdmin456!"
+}
+
+### Delete Admin by ID
+DELETE {{FCG_API_HostAddress}}/api/admin/Admin/{{AdminId}}
+Authorization: Bearer {{AuthToken}}
+
+### Test Different Filters
+# @name testVariousFilters
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=10&Filter.Role=Admin
+Authorization: Bearer {{AuthToken}}
+
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=10&Filter.Name=Carlos
+Authorization: Bearer {{AuthToken}}
+
+### Cleanup - Remove Test Admins
+# @name cleanupTestAdmins
+GET {{FCG_API_HostAddress}}/api/admin/Admin?PageNumber=1&PageSize=50&Filter.Name=Test
+Authorization: Bearer {{AuthToken}}

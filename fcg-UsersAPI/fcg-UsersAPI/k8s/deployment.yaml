@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fcg-usersapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fcg-usersapi
+  template:
+    metadata:
+      labels:
+        app: fcg-usersapi
+    spec:
+      containers:
+      - name: fcg-usersapi
+        image: fcg-usersapi:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+        env:
+        - name: ConnectionStrings__DbFcg
+          value: "Host=db-fcg;Port=5431;Database=fcgdb;Username=fcguser;Password=fcgpass"
+        - name: JWT__SecretKey
+          value: "uma-chave-secreta-bem-grande-aqui"
