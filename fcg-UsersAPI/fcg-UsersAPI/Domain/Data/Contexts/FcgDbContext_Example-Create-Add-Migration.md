@@ -1,1 +1,0 @@
-# dotnet ef migrations add "FcgDbContext primeira migration" --context FcgDbContext --project FCG.Domain --startup-project FCG.Infrastructure --output-dir Data/Migrations/Default

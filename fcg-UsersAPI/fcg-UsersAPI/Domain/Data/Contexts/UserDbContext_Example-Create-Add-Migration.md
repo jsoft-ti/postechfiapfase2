@@ -1,1 +1,0 @@
-# dotnet ef migrations add [InfoMigration] --context UserDbContext --project FCG.Domain --startup-project FCG.Infrastructure --output-dir Data/Migrations/Identity
