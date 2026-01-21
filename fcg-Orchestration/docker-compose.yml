@@ -1,0 +1,12 @@
+services:
+  k8s-deployer:
+    build:
+      context: .
+      dockerfile: Dockerfile.deployer
+    container_name: fcg-k8s-deployer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.kube/config:/root/.kube/config # Mount host kubeconfig
+      - ../:/src # Mount the repo root to /src
+    working_dir: /src/fcg-Orchestration
+    command: ["deploy.sh"]

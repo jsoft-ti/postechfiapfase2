@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+  namespace: fcg-system
+data:
+  init.sql: |
+    CREATE DATABASE fcg_catalog_db;
+    CREATE DATABASE fcg_users_db;
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: fcg-system
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        env:
+        - name: POSTGRES_USER
+          value: fcguser
+        - name: POSTGRES_PASSWORD
+          value: fcgpass
+        - name: POSTGRES_DB
+          value: fcgdb
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgres-storage
+        emptyDir: {}
+      - name: init-script
+        configMap:
+          name: postgres-init-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: fcg-system
+spec:
+  selector:
+    app: postgres
+  ports:
+    - name: standard
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+    - name: users-port
+      protocol: TCP
+      port: 5431
+      targetPort: 5432
