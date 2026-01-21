@@ -30,6 +30,7 @@ metadata:
   name: rabbitmq
   namespace: fcg-system
 spec:
+  type: LoadBalancer
   selector:
     app: rabbitmq
   ports:
