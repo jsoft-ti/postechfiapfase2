@@ -1,0 +1,194 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Login
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "seu_usuario",
+  "password": "sua_senha"
+}
+
+### Admin Game Endpoints
+
+### Step 1: Get Initial Games List with Filters
+# @name getInitialGames
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=20&OrderBy.OrderBy=title&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Test Genre Filter
+# @name testGenreFilter
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=50&Filter.Genre=Action&Filter.MinPrice=20&Filter.MaxPrice=150
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Test RPG Filter
+# @name testRPGFilter
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=30&Filter.Genre=RPG
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Create New Game
+# @name createNewGame
+POST {{FCG_API_HostAddress}}/api/admin/game
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9876543210987",
+  "title": "Elden Ring: Shadow of the Erdtree",
+  "subTitle": "Nova Expansão",
+  "genre": "Action RPG",
+  "description": "Uma nova jornada épica no mundo de Elden Ring, explorando terras inexploradas e enfrentando novos desafios.",
+  "price": 199.90
+}
+
+### Step 5: Verify Game Creation in List
+# @name verifyGameCreation
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=25&OrderBy.OrderBy=title&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Get Game by ID (Admin)
+# @name getGameById
+GET {{FCG_API_HostAddress}}/api/admin/game/{{CreatedGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Create Second Game for More Testing
+# @name createSecondGame
+POST {{FCG_API_HostAddress}}/api/admin/game
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9876543210123",
+  "title": "Cyberpunk 2077: Ultimate Edition",
+  "subTitle": "Edição Completa",
+  "genre": "RPG",
+  "description": "A experiência definitiva de Cyberpunk 2077 com todo o conteúdo adicional.",
+  "price": 149.90
+}
+
+### Step 8: Update First Created Game
+# @name updateGame
+PUT {{FCG_API_HostAddress}}/api/admin/game/{{CreatedGameId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9876543210987",
+  "title": "Elden Ring: Shadow of the Erdtree",
+  "subTitle": "Expansão Definitiva",
+  "genre": "Action RPG",
+  "description": "Uma nova jornada épica no mundo de Elden Ring, explorando terras inexploradas e enfrentando desafios ainda maiores.",
+  "price": 179.90
+}
+
+### Step 9: Verify Game After Update
+# @name verifyUpdatedGame
+GET {{FCG_API_HostAddress}}/api/admin/game/{{CreatedGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Test Price Range Filter
+# @name testPriceFilter
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=20&Filter.MinPrice=150&Filter.MaxPrice=200
+Authorization: Bearer {{AuthToken}}
+
+### Step 11: Test Name Filter
+# @name testNameFilter
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=10&Filter.Name=Elden
+Authorization: Bearer {{AuthToken}}
+
+### Step 12: Delete Second Game (Cleanup)
+# @name deleteSecondGame
+DELETE {{FCG_API_HostAddress}}/api/admin/game/{{SecondGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 13: Verify Deletion
+# @name verifyDeletion
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=30
+Authorization: Bearer {{AuthToken}}
+
+### Step 14: Final Games Summary
+# @name finalSummary
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=5&OrderBy.OrderBy=price&OrderBy.Ascending=false
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations
+
+### Get Games with Custom Filters
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=50&Filter.Genre=Action&Filter.MinPrice=20&Filter.MaxPrice=150
+Authorization: Bearer {{AuthToken}}
+
+### Create Game (Template)
+POST {{FCG_API_HostAddress}}/api/admin/game
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9876543210987",
+  "title": "Novo Jogo",
+  "subTitle": "Subtítulo do Jogo",
+  "genre": "Gênero",
+  "description": "Descrição detalhada do jogo.",
+  "price": 99.90
+}
+
+### Delete Game
+DELETE {{FCG_API_HostAddress}}/api/admin/game/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Get Game by ID (Admin)
+GET {{FCG_API_HostAddress}}/api/admin/game/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Update Game (Template)
+PUT {{FCG_API_HostAddress}}/api/admin/game/{{GameId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9876543210987",
+  "title": "Título Atualizado",
+  "subTitle": "Subtítulo Atualizado",
+  "genre": "Gênero Atualizado",
+  "description": "Descrição atualizada do jogo.",
+  "price": 129.90
+}
+
+### Bulk Create Test Games
+# @name bulkCreateGames
+POST {{FCG_API_HostAddress}}/api/admin/game
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9786555520333",
+  "title": "The Legend of Zelda: Breath of the Wild",
+  "subTitle": "Aventura Épica",
+  "genre": "Adventure",
+  "description": "Explore Hyrule em uma aventura aberta cheia de descobertas.",
+  "price": 299.90
+}
+
+POST {{FCG_API_HostAddress}}/api/admin/game
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "ean": "9786555520444",
+  "title": "Call of Duty: Modern Warfare III",
+  "subTitle": "FPS Intenso",
+  "genre": "FPS",
+  "description": "Experimente o combate moderno em campanha emocionante e multiplayer.",
+  "price": 249.90
+}
+
+### Test Multiple Filters Combined
+# @name testCombinedFilters
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=15&Filter.Genre=RPG&Filter.MinPrice=100&Filter.MaxPrice=300&OrderBy.OrderBy=title&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Quick Games Status Check
+# @name quickGamesCheck
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}

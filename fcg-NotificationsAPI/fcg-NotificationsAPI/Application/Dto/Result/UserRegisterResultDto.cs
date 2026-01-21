@@ -1,0 +1,8 @@
+namespace Application.Dto.Result;
+
+public class UserRegisterResultDto
+{
+    public Guid Guid { get; set; }
+    public string Nome { get; set; }
+    public string Email { get; set; }
+}

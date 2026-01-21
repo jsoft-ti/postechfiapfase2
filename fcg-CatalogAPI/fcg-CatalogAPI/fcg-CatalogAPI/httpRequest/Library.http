@@ -1,0 +1,85 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Library Endpoints - Dynamic GameId Capture
+
+### Step 1: Get Available Games from Gallery for Purchase Testing
+GET {{FCG_API_HostAddress}}/api/Gallery?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Get Current Library Status
+GET {{FCG_API_HostAddress}}/api/Library?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Get Library Stats
+GET {{FCG_API_HostAddress}}/api/Library/stats
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Check Purchase Eligibility for Available Game
+GET {{FCG_API_HostAddress}}/api/Library/can-purchase/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Check Ownership for Available Game
+GET {{FCG_API_HostAddress}}/api/Library/owns/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Purchase Game (if eligible)
+POST {{FCG_API_HostAddress}}/api/Library/purchase/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Verify Library After Purchase
+GET {{FCG_API_HostAddress}}/api/Library?PageNumber=1&PageSize=10&OrderBy.OrderBy=purchaseDate&OrderBy.Ascending=false
+Authorization: Bearer {{AuthToken}}
+
+### Step 8: Get Recent Games
+GET {{FCG_API_HostAddress}}/api/Library/recent?count=5
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Test Ownership Checks on Different Games
+### Check ownership on newly purchased game
+GET {{FCG_API_HostAddress}}/api/Library/owns/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Get Specific Library Game Details
+GET {{FCG_API_HostAddress}}/api/Library/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations (Para testes específicos)
+
+### Get Full Library with Pagination
+GET {{FCG_API_HostAddress}}/api/Library?PageNumber=1&PageSize=20&OrderBy.OrderBy=purchaseDate&OrderBy.Ascending=false
+Authorization: Bearer {{AuthToken}}
+
+### Get Library Game by Specific ID
+GET {{FCG_API_HostAddress}}/api/Library/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Check if Can Purchase Specific Game
+GET {{FCG_API_HostAddress}}/api/Library/can-purchase/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Check if Owns Specific Game
+GET {{FCG_API_HostAddress}}/api/Library/owns/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Purchase Specific Game
+POST {{FCG_API_HostAddress}}/api/Library/purchase/{{AvailableGameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Get Recent Games with Custom Count
+GET {{FCG_API_HostAddress}}/api/Library/recent?count=8
+Authorization: Bearer {{AuthToken}}
+
+### Get Library Stats
+GET {{FCG_API_HostAddress}}/api/Library/stats
+Authorization: Bearer {{AuthToken}}
+
+### Test Multiple Purchase Scenarios
+### Try purchasing second available game
+POST {{FCG_API_HostAddress}}/api/Library/purchase/{{AvailableGameId2}}
+Authorization: Bearer {{AuthToken}}
+
+### Final Library Status Check
+GET {{FCG_API_HostAddress}}/api/Library/stats
+Authorization: Bearer {{AuthToken}}

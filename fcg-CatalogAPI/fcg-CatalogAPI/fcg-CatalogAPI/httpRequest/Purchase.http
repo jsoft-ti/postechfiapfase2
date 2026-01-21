@@ -1,0 +1,211 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZDJkY2NiOS1jOTFmLTQ5ZjMtYTBkMi1kYzQ1ZGVmOGU2ZGUiLCJlbWFpbCI6Im1hcmlhLnNhbnRvc0BlbWFpbC5jb20iLCJqdGkiOiIxNDMyMjQwNi0wNGQxLTQyZTUtODQxNy01ZDI0NTE3ZmRiZTkiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjNkMmRjY2I5LWM5MWYtNDlmMy1hMGQyLWRjNDVkZWY4ZTZkZSIsImRpc3BsYXlOYW1lIjoiTWFyaWEgU2FudG9zIiwiZmlyc3ROYW1lIjoiTWFyaWEiLCJsYXN0TmFtZSI6IlNhbnRvcyIsImZ1bGxOYW1lIjoiTWFyaWEgU2FudG9zIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiUGxheWVyIiwiZXhwIjoxNzYyMTM0MTk3LCJpc3MiOiJGQ0cuQXBpIiwiYXVkIjoiRkNHLkNsaWVudCJ9.TBrFqbrt4g0U0T1IiD4gj7GFdVRW_kHzgoJF4kvBsi0
+
+### Purchase Endpoints - Dynamic Data Capture
+GET {{FCG_API_HostAddress}}/api/Auth/me
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Purchase Entire Cart
+POST {{FCG_API_HostAddress}}/api/Purchase/cart
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Verify Cart After Purchase (Should be empty)
+GET {{FCG_API_HostAddress}}/api/cart
+Authorization: Bearer {{AuthToken}}
+
+### Step 8: Single Purchase Test
+POST {{FCG_API_HostAddress}}/api/Purchase/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId}}",
+  "gameId": "{{GameId1}}"
+}
+
+### Step 9: Get Player Purchases - All Purchases
+GET {{FCG_API_HostAddress}}/api/Purchase/player
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 20,
+  "orderBy": {
+    "sortBy": "purchaseDate",
+    "ascending": false
+  },
+  "filter": {
+    "playerName": "",
+    "gameName": "",
+    "minPrice": 0,
+    "maxPrice": 1000,
+    "startDate": "2020-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Step 10: Get Player Purchases - Filtered by Game Name
+GET {{FCG_API_HostAddress}}/api/Purchase/player
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 10,
+  "orderBy": {
+    "sortBy": "purchaseDate",
+    "ascending": false
+  },
+  "filter": {
+    "playerName": "",
+    "gameName": "{{GameTitle1}}",
+    "minPrice": 0,
+    "maxPrice": 1000,
+    "startDate": "2020-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Step 11: Get Player Purchases - Filtered by Price Range
+GET {{FCG_API_HostAddress}}/api/Purchase/player
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 10,
+  "orderBy": {
+    "sortBy": "price",
+    "ascending": false
+  },
+  "filter": {
+    "playerName": "",
+    "gameName": "",
+    "minPrice": 50,
+    "maxPrice": 200,
+    "startDate": "2020-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Step 12: Get Player Purchases - Filtered by Date Range
+GET {{FCG_API_HostAddress}}/api/Purchase/player
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 10,
+  "orderBy": {
+    "sortBy": "purchaseDate",
+    "ascending": false
+  },
+  "filter": {
+    "playerName": "",
+    "gameName": "",
+    "minPrice": 0,
+    "maxPrice": 1000,
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Step 13: Test Another Single Purchase
+POST {{FCG_API_HostAddress}}/api/Purchase/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId}}",
+  "gameId": "{{GameId2}}"
+}
+
+### Step 14: Final Purchases Summary
+GET {{FCG_API_HostAddress}}/api/Purchase/player
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 5,
+  "orderBy": {
+    "sortBy": "purchaseDate",
+    "ascending": false
+  },
+  "filter": {}
+}
+
+### Individual Operations (Para testes específicos)
+
+### Purchase Cart Only
+POST {{FCG_API_HostAddress}}/api/Purchase/cart
+Authorization: Bearer {{AuthToken}}
+
+### Single Purchase with Specific IDs
+POST {{FCG_API_HostAddress}}/api/Purchase/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId}}",
+  "gameId": "{{GameId1}}"
+}
+
+### Get Player Purchases with Custom Filters
+GET {{FCG_API_HostAddress}}/api/Purchase/player
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 10,
+  "orderBy": {
+    "sortBy": "purchaseDate",
+    "ascending": false
+  },
+  "filter": {
+    "gameName": "Cyberpunk",
+    "minPrice": 10,
+    "maxPrice": 200,
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Quick Purchases Check
+GET {{FCG_API_HostAddress}}/api/Purchase/player
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 5,
+  "orderBy": {
+    "sortBy": "purchaseDate",
+    "ascending": false
+  },
+  "filter": {}
+}
+
+### Test Multiple Single Purchases
+### Purchase expensive game if available
+POST {{FCG_API_HostAddress}}/api/Purchase/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId}}",
+  "gameId": "{{ExpensiveGameId}}"
+}
+
+### Purchase cheap game if available
+POST {{FCG_API_HostAddress}}/api/Purchase/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId}}",
+  "gameId": "{{CheapGameId}}"
+}

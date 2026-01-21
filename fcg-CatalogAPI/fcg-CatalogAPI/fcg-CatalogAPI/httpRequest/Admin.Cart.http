@@ -1,0 +1,129 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Login
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "seu_usuario",
+  "password": "sua_senha"
+}
+
+### Admin Cart Endpoints
+
+### Step 1: Get Players List for Admin Operations
+# @name getPlayersList
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=10&OrderBy.SortBy=displayName
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Get Available Games for Admin Cart Operations
+# @name getAvailableGames
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Get Player Cart (Admin) - Initial State
+# @name getPlayerCartInitial
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Clear Player Cart (Admin) - Ensure Clean State
+# @name clearPlayerCartInitial
+DELETE {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/clear
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Add First Game to Player Cart (Admin)
+# @name addFirstGameToPlayerCart
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId1}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Verify Cart After First Addition (Admin)
+# @name verifyCartAfterFirstAdd
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Add Second Game to Player Cart (Admin)
+# @name addSecondGameToPlayerCart
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId2}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 8: Verify Cart with Multiple Items (Admin)
+# @name verifyCartWithMultipleItems
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Remove Specific Game from Player Cart (Admin)
+# @name removeGameFromPlayerCart
+DELETE {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/remove/{{GameId1}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Verify Cart After Removal (Admin)
+# @name verifyCartAfterRemoval
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 11: Add Third Game for More Testing (Admin)
+# @name addThirdGameToPlayerCart
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId3}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 12: Test with Different Player (Admin)
+# @name testWithDifferentPlayer
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId2}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 13: Clear Player Cart Final (Admin)
+# @name clearPlayerCartFinal
+DELETE {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/clear
+Authorization: Bearer {{AuthToken}}
+
+### Step 14: Final Verification - Empty Cart (Admin)
+# @name finalCartVerification
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations
+
+### Get Player Cart (Admin)
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Add to Player Cart (Admin)
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Clear Player Cart (Admin)
+DELETE {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/clear
+Authorization: Bearer {{AuthToken}}
+
+### Remove from Player Cart (Admin)
+DELETE {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/remove/{{GameId}}
+Authorization: Bearer {{AuthToken}}
+
+### Bulk Operations Test
+# @name bulkAdminCartOperations
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId1}}
+Authorization: Bearer {{AuthToken}}
+
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId2}}
+Authorization: Bearer {{AuthToken}}
+
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId3}}
+Authorization: Bearer {{AuthToken}}
+
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Test Error Scenarios
+# @name testErrorScenarios
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{AuthToken}}
+
+DELETE {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/remove/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{AuthToken}}
+
+### Quick Admin Cart Status Check
+# @name quickAdminCartCheck
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}

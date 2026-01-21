@@ -1,0 +1,11 @@
+﻿services:
+  fcg-notificationsapi:
+    build:
+      context: .
+      dockerfile: fcg-NotificationsAPI/Dockerfile
+    container_name: fcg-notificationsapi
+    ports:
+      - "8082:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Production

@@ -1,0 +1,37 @@
+﻿services:
+  fcg-usersapi:
+    build:
+      context: .
+      dockerfile: fcg-UsersAPI/Dockerfile
+    container_name: fcg-usersapi
+    ports:
+      - "8081:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DbFcg: "Host=db-fcg;Port=5431;Database=fcgdb;Username=fcguser;Password=fcgpass"
+    depends_on:
+      db-fcg:
+        condition: service_healthy
+
+  db-fcg:
+    image: postgres:16
+    container_name: db-fcg
+    restart: always
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: fcguser
+      POSTGRES_PASSWORD: fcgpass
+      POSTGRES_DB: fcgdb
+    volumes:
+      - pgdata_fcg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fcguser -d fcgdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  pgdata_fcg:

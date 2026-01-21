@@ -1,0 +1,12 @@
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/bin/Debug/net9.0/Domain.deps.json
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/bin/Debug/net9.0/Domain.dll
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/bin/Debug/net9.0/Domain.pdb
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/Domain.AssemblyInfoInputs.cache
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/Domain.AssemblyInfo.cs
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/Domain.csproj.CoreCompileInputs.cache
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/Domain.dll
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/refint/Domain.dll
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/Domain.pdb
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/ref/Domain.dll
+/Users/jocasiso/Desktop/Pessoal/estudos/postech/fase2/fcg-NotificationsAPI/fcg-NotificationsAPI/Domain/obj/Debug/net9.0/Domain.sourcelink.json

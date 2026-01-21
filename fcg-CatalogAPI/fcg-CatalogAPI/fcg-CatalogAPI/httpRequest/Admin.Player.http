@@ -1,0 +1,154 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Login
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "seu_usuario",
+  "password": "sua_senha"
+}
+
+### Admin Player Endpoints
+
+### Step 1: Get Players List with Filters
+# @name getPlayersList
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=20&OrderBy.SortBy=displayName&Filter.Role=Player
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Test Different Player Filters
+# @name testPlayerFilters
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=15&Filter.Email=gmail.com
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Test Name Filter
+# @name testNameFilter
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=10&Filter.Name={{PlayerFirstName1}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Get Player Details by ID
+# @name getPlayerDetails
+GET {{FCG_API_HostAddress}}/api/admin/user/{{PlayerId1}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Update Player Information
+# @name updatePlayer
+PUT {{FCG_API_HostAddress}}/api/admin/player/{{PlayerId2}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "{{PlayerFirstName2}}",
+  "lastName": "Silva Updated",
+  "displayName": "{{PlayerDisplayName2}}Pro",
+  "email": "{{PlayerEmail2}}",
+  "birthday": "{{$datetime 'YYYY-MM-DD' -1 y}}",
+  "password": "currentPassword123",
+  "newPassword": "NewSecurePassword789!",
+  "confirmNewPassword": "NewSecurePassword789!"
+}
+
+### Step 6: Verify Player Update
+# @name verifyPlayerUpdate
+GET {{FCG_API_HostAddress}}/api/admin/user/{{PlayerId2}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Create Test Player for Deletion
+# @name createTestPlayer
+POST {{FCG_API_HostAddress}}/api/Auth/register-player
+Content-Type: application/json
+
+{
+  "firstName": "Teste",
+  "lastName": "Player",
+  "displayName": "TestPlayerForDelete",
+  "birthday": "2000-01-01",
+  "email": "test.player.delete@example.com",
+  "password": "TestPassword123!",
+  "confirmPassword": "TestPassword123!"
+}
+
+### Step 8: Verify Test Player Creation
+# @name verifyTestPlayer
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=10&Filter.Name=TestPlayerForDelete
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Delete Test Player
+# @name deletePlayer
+DELETE {{FCG_API_HostAddress}}/api/admin/player/{{TestPlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 10: Verify Player Deletion
+# @name verifyPlayerDeletion
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=30
+Authorization: Bearer {{AuthToken}}
+
+### Step 11: Test Different Sorting Options
+# @name testSortingOptions
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=5&OrderBy.SortBy=email&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Step 12: Test Role Filter
+# @name testRoleFilter
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=10&Filter.Role=Admin
+Authorization: Bearer {{AuthToken}}
+
+### Step 13: Final Players Summary
+# @name finalSummary
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=10&OrderBy.SortBy=displayName&OrderBy.Ascending=true
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations
+
+### Get Players with Custom Filters
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=20&OrderBy.SortBy=displayName&Filter.Role=Player
+Authorization: Bearer {{AuthToken}}
+
+### Get Players with Email Filter
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=15&Filter.Email=example.com
+Authorization: Bearer {{AuthToken}}
+
+### Get Players with Name Filter
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=10&Filter.Name=João
+Authorization: Bearer {{AuthToken}}
+
+### Delete Player
+DELETE {{FCG_API_HostAddress}}/api/admin/player/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Update Player (Template)
+PUT {{FCG_API_HostAddress}}/api/admin/player/{{PlayerId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "firstName": "NovoNome",
+  "lastName": "NovoSobrenome",
+  "displayName": "NovoDisplay",
+  "email": "novo.email@example.com",
+  "birthday": "1990-01-01",
+  "password": "senhaAtual123",
+  "newPassword": "novaSenha456",
+  "confirmNewPassword": "novaSenha456"
+}
+
+### Get Player Details by ID
+GET {{FCG_API_HostAddress}}/api/admin/user/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Test Different Sorting
+# @name testVariousSorting
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=5&OrderBy.SortBy=createdAt&OrderBy.Ascending=false
+Authorization: Bearer {{AuthToken}}
+
+### Quick Players Status Check
+# @name quickPlayersCheck
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=5
+Authorization: Bearer {{AuthToken}}
+
+### Bulk Player Operations Test
+# @name bulkPlayerOperations
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=50
+Authorization: Bearer {{AuthToken}}

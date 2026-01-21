@@ -1,0 +1,201 @@
+﻿@port = 7314
+@FCG_API_HostAddress = http://localhost:{{port}}
+@AuthToken = your_jwt_token_here
+
+### Login
+POST {{FCG_API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "email": "seu_usuario",
+  "password": "sua_senha"
+}
+
+### Admin Purchases Endpoints
+
+### Step 1: Get Players and Games for Purchase Operations
+# @name getPlayersAndGames
+GET {{FCG_API_HostAddress}}/api/admin/player?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Get available games
+GET {{FCG_API_HostAddress}}/api/admin/game?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Step 2: Clear Player Cart Before Tests
+# @name clearPlayerCart
+DELETE {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/clear
+Authorization: Bearer {{AuthToken}}
+
+### Step 3: Add Games to Player Cart for Cart Purchase Test
+# @name addGamesToCart
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId1}}
+Authorization: Bearer {{AuthToken}}
+
+POST {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}/add/{{GameId2}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 4: Verify Cart Before Purchase
+# @name verifyCartBeforePurchase
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 5: Purchase Player Cart (Admin)
+# @name purchasePlayerCart
+POST {{FCG_API_HostAddress}}/api/admin/purchases/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 6: Verify Cart After Purchase
+# @name verifyCartAfterPurchase
+GET {{FCG_API_HostAddress}}/api/admin/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 7: Single Purchase (Admin)
+# @name singlePurchase
+POST {{FCG_API_HostAddress}}/api/admin/purchases/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId}}",
+  "gameId": "{{GameId3}}"
+}
+
+### Step 8: Get All Purchases (Admin)
+# @name getAllPurchases
+GET {{FCG_API_HostAddress}}/api/admin/purchases?PageNumber=1&PageSize=50&OrderBy.SortBy=purchaseDate&OrderBy.Ascending=false&Filter.StartDate=2024-01-01T00:00:00.000Z&Filter.EndDate=2024-12-31T23:59:59.000Z
+Authorization: Bearer {{AuthToken}}
+
+### Step 9: Get Player Purchases with Filters (Admin)
+# @name getPlayerPurchases
+GET {{FCG_API_HostAddress}}/api/admin/purchases/player/{{PlayerId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 20,
+  "orderBy": {
+    "sortBy": "price",
+    "ascending": false
+  },
+  "filter": {
+    "minPrice": 50,
+    "maxPrice": 300,
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Step 10: Test Different Purchase Filters
+# @name testPurchaseFilters
+GET {{FCG_API_HostAddress}}/api/admin/purchases/player/{{PlayerId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 10,
+  "orderBy": {
+    "sortBy": "purchaseDate",
+    "ascending": false
+  },
+  "filter": {
+    "gameName": "{{GameTitle1}}",
+    "minPrice": 0,
+    "maxPrice": 1000,
+    "startDate": "2020-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Step 11: Get Purchase Stats
+# @name getPurchaseStats
+GET {{FCG_API_HostAddress}}/api/admin/purchases/stats?startDate=2024-01-01T00:00:00.000Z&endDate=2024-12-31T23:59:59.000Z
+Authorization: Bearer {{AuthToken}}
+
+### Step 12: Test Date Range Filter
+# @name testDateRangeFilter
+GET {{FCG_API_HostAddress}}/api/admin/purchases?PageNumber=1&PageSize=20&Filter.StartDate=2024-06-01T00:00:00.000Z&Filter.EndDate=2024-06-30T23:59:59.000Z
+Authorization: Bearer {{AuthToken}}
+
+### Step 13: Test Player Name Filter
+# @name testPlayerNameFilter
+GET {{FCG_API_HostAddress}}/api/admin/purchases?PageNumber=1&PageSize=15&Filter.PlayerName={{PlayerDisplayName}}
+Authorization: Bearer {{AuthToken}}
+
+### Step 14: Additional Single Purchase for Stats
+# @name additionalPurchase
+POST {{FCG_API_HostAddress}}/api/admin/purchases/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId2}}",
+  "gameId": "{{GameId1}}"
+}
+
+### Step 15: Final Purchase Stats
+# @name finalPurchaseStats
+GET {{FCG_API_HostAddress}}/api/admin/purchases/stats?startDate=2024-01-01T00:00:00.000Z&endDate=2024-12-31T23:59:59.000Z
+Authorization: Bearer {{AuthToken}}
+
+### Individual Operations
+
+### Get All Purchases with Custom Filters
+GET {{FCG_API_HostAddress}}/api/admin/purchases?PageNumber=1&PageSize=100&OrderBy.SortBy=purchaseDate&OrderBy.Ascending=false&Filter.StartDate=2024-01-01T00:00:00.000Z&Filter.EndDate=2024-12-31T23:59:59.000Z
+Authorization: Bearer {{AuthToken}}
+
+### Purchase Player Cart (Admin)
+POST {{FCG_API_HostAddress}}/api/admin/purchases/cart/{{PlayerId}}
+Authorization: Bearer {{AuthToken}}
+
+### Get Player Purchases (Admin)
+GET {{FCG_API_HostAddress}}/api/admin/purchases/player/{{PlayerId}}
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "pageNumber": 1,
+  "pageSize": 50,
+  "orderBy": {
+    "sortBy": "price",
+    "ascending": false
+  },
+  "filter": {
+    "minPrice": 50,
+    "maxPrice": 300,
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T23:59:59.000Z"
+  }
+}
+
+### Single Purchase (Admin)
+POST {{FCG_API_HostAddress}}/api/admin/purchases/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId}}",
+  "gameId": "{{GameId}}"
+}
+
+### Get Purchase Stats
+GET {{FCG_API_HostAddress}}/api/admin/purchases/stats?startDate=2024-01-01T00:00:00.000Z&endDate=2024-12-31T23:59:59.000Z
+Authorization: Bearer {{AuthToken}}
+
+### Quick Purchases Overview
+# @name quickPurchasesOverview
+GET {{FCG_API_HostAddress}}/api/admin/purchases?PageNumber=1&PageSize=10
+Authorization: Bearer {{AuthToken}}
+
+### Test Multiple Purchase Scenarios
+# @name testMultipleScenarios
+POST {{FCG_API_HostAddress}}/api/admin/purchases/single
+Content-Type: application/json
+Authorization: Bearer {{AuthToken}}
+
+{
+  "playerId": "{{PlayerId2}}",
+  "gameId": "{{GameId2}}"
+}

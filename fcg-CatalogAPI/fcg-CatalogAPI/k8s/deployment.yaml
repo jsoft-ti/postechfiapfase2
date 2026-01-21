@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fcg-catalog-deployment
+  labels:
+    app: fcg-catalog
+spec:
+  replicas: 3 # Configuração do ReplicaSet: 3 réplicas da API
+  selector:
+    matchLabels:
+      app: fcg-catalog
+  template:
+    metadata:
+      labels:
+        app: fcg-catalog
+    spec:
+      containers:
+        - name: fcg-catalog-api
+          image: fcg-catalogapi:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: ASPNETCORE_URLS
+              value: "http://+:8080"
+            - name: ConnectionStrings__DbFcg
+              # Aponta para o Service do Postgres criado em postgres.yaml
+              value: "Host=postgres;Port=5432;Database=fcgdb;Username=fcguser;Password=fcgpass"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fcg-catalog-service
+spec:
+  type: NodePort
+  selector:
+    app: fcg-catalog
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30000
